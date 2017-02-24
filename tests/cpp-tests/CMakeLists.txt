@@ -102,7 +102,7 @@ set(TESTS_SRC
   Classes/MaterialSystemTest/MaterialSystemTest
   Classes/MenuTest/MenuTest.cpp
   Classes/MotionStreakTest/MotionStreakTest.cpp
-  Classes/MutiTouchTest/MutiTouchTest.cpp
+  Classes/MultiTouchTest/MultiTouchTest.cpp
   Classes/NewAudioEngineTest/NewAudioEngineTest.cpp
   Classes/NewEventDispatcherTest/NewEventDispatcherTest.cpp
   Classes/NewRendererTest/NewRendererTest.cpp
@@ -200,15 +200,16 @@ if(USE_BULLET)
     )
 endif()
 
-if(LINUX)
-    set(EXTENDED_TESTS_SRC
+set (EXTENDED_TESTS_SRC
+      Classes/ExtensionsTest/NetworkTest/HttpClientTest.cpp
+      Classes/ExtensionsTest/NetworkTest/SocketIOTest.cpp
+      Classes/ExtensionsTest/NetworkTest/WebSocketTest.cpp
     )
-else()
-    set(EXTENDED_TESTS_SRC
-        Classes/ExtensionsTest/NetworkTest/HttpClientTest.cpp
-        Classes/ExtensionsTest/NetworkTest/SocketIOTest.cpp
-        Classes/ExtensionsTest/NetworkTest/WebSocketTest.cpp
 
+if(LINUX)
+
+else()
+    list(APPEND EXTENDED_TESTS_SRC
         Classes/UITest/CocoStudioGUITest/UIEditBoxTest.cpp
     )
 endif()

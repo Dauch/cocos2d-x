@@ -114,7 +114,7 @@ namespace
     const int LOGO_WIDTH = 188;
     const int LOGO_HEIGHT = 35;
     const int LOGO_RAW_LENGTH = 24;
-    const char LOGO_IMAGE[] =
+    const int LOGO_IMAGE[] =
     {
         15, -16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, -64, 15, 63, -32, -2, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 31, -64, 15, 127, -125, -1, -128, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -1684,6 +1684,15 @@ void PhysicsDemoBug5482::onExit()
 void PhysicsDemoBug5482::changeBodyCallback(Ref* /*sender*/)
 {
     Sprite* node = _bodyInA ? _nodeB : _nodeA;
+    if (_bodyInA)
+    {
+        _button->setString("Set Body To A");
+    }
+    else
+    {
+        _button->setString("Set Body To B");
+    }
+
     if (_body->getOwner())
     {
         _body->getOwner()->removeComponent(_body);
@@ -1755,7 +1764,7 @@ std::string PhysicsFixedUpdate::title() const
 
 std::string PhysicsFixedUpdate::subtitle() const
 {
-    return "The secend ball should not run across the wall";
+    return "The second ball should not run across the wall";
 }
 
 bool PhysicsTransformTest::onTouchBegan(Touch *touch, Event* /*event*/)

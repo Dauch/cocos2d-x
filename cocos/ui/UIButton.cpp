@@ -1,5 +1,5 @@
 /****************************************************************************
-Copyright (c) 2013-2016 Chukong Technologies Inc.
+Copyright (c) 2013-2017 Chukong Technologies Inc.
 
 http://www.cocos2d-x.org
 
@@ -312,11 +312,11 @@ void Button::loadTexturePressed(const std::string& selected,TextureResType texTy
 {
     _clickedFileName = selected;
     _pressedTexType = texType;
-    bool textureLoade = true;
+    bool textureLoaded = true;
     if (selected.empty())
     {
         _buttonClickedRenderer->resetRender();
-        textureLoade = false;
+        textureLoaded = false;
     }
     else
     {
@@ -332,7 +332,7 @@ void Button::loadTexturePressed(const std::string& selected,TextureResType texTy
             break;
         }
     }
-    this->setupPressedTexture(textureLoade);
+    this->setupPressedTexture(textureLoaded);
 }
 
 void Button::setupPressedTexture(bool textureLoaded)
@@ -883,21 +883,29 @@ void Button::copySpecialProperties(Widget *widget)
     {
         _prevIgnoreSize = button->_prevIgnoreSize;
         setScale9Enabled(button->_scale9Enabled);
-        auto normalSprite = button->_buttonNormalRenderer->getSprite();
-        if (nullptr != normalSprite)
-        {
-            loadTextureNormal(normalSprite->getSpriteFrame());
-        }
-        auto clickedSprite = button->_buttonClickedRenderer->getSprite();
-        if (nullptr != clickedSprite)
-        {
-            loadTexturePressed(clickedSprite->getSpriteFrame());
-        }
-        auto disabledSprite = button->_buttonDisabledRenderer->getSprite();
-        if (nullptr != disabledSprite)
-        {
-            loadTextureDisabled(disabledSprite->getSpriteFrame());
-        }
+
+        // clone the inner sprite: https://github.com/cocos2d/cocos2d-x/issues/16924
+        button->_buttonNormalRenderer->copyTo(_buttonNormalRenderer);
+        _normalFileName = button->_normalFileName;
+        _normalTextureSize = button->_normalTextureSize;
+        _normalTexType = button->_normalTexType;
+        _normalTextureLoaded = button->_normalTextureLoaded;
+        setupNormalTexture(!_normalFileName.empty());
+
+        button->_buttonClickedRenderer->copyTo(_buttonClickedRenderer);
+        _clickedFileName = button->_clickedFileName;
+        _pressedTextureSize = button->_pressedTextureSize;
+        _pressedTexType = button->_pressedTexType;
+        _pressedTextureLoaded = button->_pressedTextureLoaded;
+        setupPressedTexture(!_clickedFileName.empty());
+
+        button->_buttonDisabledRenderer->copyTo(_buttonDisabledRenderer);
+        _disabledFileName = button->_disabledFileName;
+        _disabledTextureSize = button->_disabledTextureSize;
+        _disabledTexType = button->_disabledTexType;
+        _disabledTextureLoaded = button->_disabledTextureLoaded;
+        setupDisabledTexture(!_disabledFileName.empty());
+
         setCapInsetsNormalRenderer(button->_capInsetsNormal);
         setCapInsetsPressedRenderer(button->_capInsetsPressed);
         setCapInsetsDisabledRenderer(button->_capInsetsDisabled);
